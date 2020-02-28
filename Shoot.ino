@@ -26,8 +26,7 @@ void shootNow(){                                          //Modo Disparo
     lcd.print("/");
     lcd.print(String(cameraDelay));
    
-    digitalWrite(Valvula, HIGH);                //Abre la válvula
-
+    digitalWrite(Valvula, HIGH);                //Abre la válvula   (GOTA 1)
     //No se usa delay para poder comprobar la pulsación del botón para salir del modo Disparo
     temp = millis();                            //En temp se graba el tiempo actual en ms          
     while (millis()<drop_1_size+temp){          //Mientras el tiempo actual AHORA MISMO sea menor al tiempo de espera (en este caso drop_1_size) + el tiempo antes de entrar en el while (temp)...
@@ -37,9 +36,17 @@ void shootNow(){                                          //Modo Disparo
       }
     }                       
     digitalWrite(Valvula, LOW);                 //Cierra la válvula
-        
-    
-    digitalWrite(Valvula, HIGH);                //Abre la válvula 
+
+                                                //Pausa entre gotas
+    temp = millis();
+    while (millis()<dropsDelay+temp){
+      if (!digitalRead(Boton)) {
+        exit_for = true;
+        break;
+      }
+    } 
+          
+    digitalWrite(Valvula, HIGH);                //Abre la válvula   (GOTA 2)
     temp = millis();
     while (millis()<drop_2_size+temp){
       if (!digitalRead(Boton)) {

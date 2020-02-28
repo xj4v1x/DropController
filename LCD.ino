@@ -43,8 +43,7 @@ void showMenus(){                                                         //Men√
       case 1:
         pantalla(14, 1, String(cameraDelay));
         pantalla(18,1,"ms");
-        pantalla(14, 2, String(numPhotos));
-        pantalla(18,2,"ms");
+        pantalla(14, 2, String(numPhotos));        
         pantalla(14, 3, String(drop_1_sum));
         pantalla(18,3,"ms");
       break;
