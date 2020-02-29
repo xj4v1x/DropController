@@ -8,7 +8,7 @@ void checkButton(){                                 //----------------------CHEQ
     else RotateRight();                                                                    
     pos = newPos;                                                                                       
   }
-  if (!digitalRead(Boton)){                         //Al ser PULLUP hay que preguntar "lo contrario"
+if (!digitalRead(Boton)){                         //Al ser PULLUP hay que preguntar "lo contrario"
     delay(250);
     OK_Button();
   }
@@ -16,7 +16,6 @@ void checkButton(){                                 //----------------------CHEQ
 
 
 void RotateLeft(){                             //Giro a la izquierda
-            Serial.println(menuPage);
 
   switch (Mode){                               //Dependiendo del Modo en el que estemos....
     case 0:                                    //Mode 0 -> Normal / Pantalla de menú
@@ -37,7 +36,8 @@ void RotateLeft(){                             //Giro a la izquierda
       action(menuPage, Cursor, resta);        //Envía el número de página, la posición del Cursor para saber exactamente en qué punto del menú estamos, y el valor que hay que restar
     break;
     case 2:                                                                   //Mode 2 -> Pantalla que nos muestra los valores de las fotos que hemos hecho
-      if (showPhotosVal_first_element>1) showPhotosVal_first_element -= 4;    
+      showPhotosVal_first_element -= 4;     
+      if (showPhotosVal_first_element<1) showPhotosVal_first_element = numPhotos+1-(numPhotos%4);      
       showPhotosVal(showPhotosVal_first_element);
     break;
   }
@@ -60,7 +60,9 @@ void RotateRight(){                             //Giro a la derecha
       action(menuPage, Cursor, sum);          //Envía el número de página, la posición del Cursor para saber exactamente en qué punto del menú estamos, y el valor que hay que sumar
     break;
     case 2:                                                                            //Mode 2 -> Pantalla que nos muestra los valores de las fotos que hemos hecho            
-      if (showPhotosVal_first_element < numPhotos) showPhotosVal_first_element += 4;        
+
+      showPhotosVal_first_element += 4;                                                
+      if (showPhotosVal_first_element>numPhotos) showPhotosVal_first_element = 1;           
       showPhotosVal(showPhotosVal_first_element);      
     break;
   }

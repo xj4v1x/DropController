@@ -69,6 +69,10 @@ String MainMenu[MainMenuItems] = {                                          //Se
                                 "GO!!!"
 };
 
+String cursorText = ">";
+bool cursorMode = false;
+bool antCursorMode = false;
+
 //Diferentes páginas dentro del menú
 int menuPage = 0;              //Salto de página en los menús
 int antmenuPage = 1;
@@ -112,6 +116,7 @@ int showPhotosVal_first_element = 1;
 
 //Para calcular tiempo y no usar delay
 unsigned long temp;
+unsigned long temp_drop1;
 
 void setup() { 
   Serial.begin(9600);                     

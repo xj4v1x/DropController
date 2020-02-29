@@ -9,7 +9,7 @@ void shootNow(){                                          //Modo Disparo
   numPhotos_init = numPhotos;
 
   bool exit_for = false;                                //Para forzar la salida del for
-
+  byte numPhotos_end = 0;                               //Si forzamos la salida del for aquí se almacena el número total de fotos realizadas
   
   for (int i=1;i<=numPhotos;i++){                       //Secuencia de fotos
     lcd.clear();    
@@ -29,6 +29,7 @@ void shootNow(){                                          //Modo Disparo
     digitalWrite(Valvula, HIGH);                //Abre la válvula   (GOTA 1)
     //No se usa delay para poder comprobar la pulsación del botón para salir del modo Disparo
     temp = millis();                            //En temp se graba el tiempo actual en ms          
+    temp_drop1= temp;                           //En temp_drop1 se graba el instante en el que se abre la válvula de la gota 1, para después poder calcular el retardo de la cámara respecto a este momento
     while (millis()<drop_1_size+temp){          //Mientras el tiempo actual AHORA MISMO sea menor al tiempo de espera (en este caso drop_1_size) + el tiempo antes de entrar en el while (temp)...
       if (!digitalRead(Boton)){                 //En cuanto pulsamos el botón, pone el valor true en exit_for y fuerza la salida del while
         exit_for = true;
@@ -55,46 +56,53 @@ void shootNow(){                                          //Modo Disparo
       }
     }       
     digitalWrite(Valvula, LOW);                 //Cierra la válvula    
-
-    temp = millis();
-    while (millis()<cameraDelay+temp){
+                                          
+    //temp = millis();                            //Retardo de disparo (respecto a Gota 1)
+    while (millis()<temp_drop1+cameraDelay){
+    //while (millis()<cameraDelay+temp){
       if (!digitalRead(Boton)) {
         exit_for = true;
         break;
       }
-    }           
-    //delay(cameraDelay);      
+    }               
     
-    digitalWrite(Camara, HIGH);                 //Activa el Optoacoplador (disparo de cámara)
+    digitalWrite(Camara, HIGH);                 //Activa el Optoacoplador (disparo de cámara)    
     temp = millis();
-    while (millis()<=50){
+    while (millis()<=100+temp){
       if (!digitalRead(Boton)) {
         exit_for = true;
         break;
       }
     }     
     digitalWrite(Camara, LOW);                 //Desactiva el Optoacoplador (disparo de cámara)
-
-    temp = millis();
-    while (millis()<=delay_between_pictures+temp){
-      if (!digitalRead(Boton)) {
-        exit_for = true;
-        break;
-      }
-    } 
     
+    if (numPhotos>1){                                   //La pausa entre fotos, para descansar el flash, solo la hace en caso de que el número de fotos sea mayor a 1
+      temp = millis();
+      while (millis()<=delay_between_pictures+temp){
+        if (!digitalRead(Boton)) {
+          exit_for = true;
+          break;
+        }
+      } 
+    }
+      
+    numPhotos_end++;  
     if (exit_for) break;                       //Si exit_for es true, porque se ha pulsado el botón, fuerza la salida del for
                                                //Suma los incrementos antes de la siguiente foto   
     drop_1_size+=drop_1_sum;
     drop_2_size+=drop_2_sum;
     dropsDelay+=dropsDelay_sum;
-    cameraDelay+=cameraDelay_sum;         
+    cameraDelay+=cameraDelay_sum;              //Actualiza el número de fotos hechas hasta el momento
   }
+  numPhotos = numPhotos_end;                  //Graba en numPhotos el número real de fotos realizadas, para solo mostrar en pantalla los datos de las fotos que realmente hayamos hecho
   delay (500);                                //Este delay asegura que no tenemos rebote con la pulsación del botón antes de pasar a la siguiente pantalla
-  showPhotosVal(1);                           //Muestra en pantalla los valores de las fotos tomadas, pasamos el número de foto que queremos que aparezca en la primera línea
-  while (Mode == 2){                          //Mientras sigamos en Modo 2 comprueba el Encoder
-    checkButton();  
-  }     
+  if (numPhotos>1){
+    showPhotosVal(1);                           //Muestra en pantalla los valores de las fotos tomadas, pasamos el número de foto que queremos que aparezca en la primera línea
+    while (Mode == 2){                          //Mientras sigamos en Modo 2 comprueba el Encoder
+      checkButton();  
+    }    
+  }
+     
 
   //Vuelve a poner los valores al valor inicial que hemos usado antes de hacer la secuencia de fotos
   drop_1_size = drop_1_size_init;             
@@ -104,6 +112,7 @@ void shootNow(){                                          //Modo Disparo
   numPhotos = numPhotos_init;
 
   //Volvemos a la página principal                                                                                              
-  menuPage=0;
-  Cursor=1;    
+  menuPage=3;
+  Cursor=2;    
+  showMenu();
 }

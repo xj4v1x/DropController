@@ -23,10 +23,10 @@ void showMenus(){                                                         //Men�
 
     //Posición de ">", dependiendo en qué modo estemos
     if (Mode == 0){                                      
-      pantalla(0,Cursor, ">");
+      pantalla(0,Cursor, cursorText);
     } else {
       if (Mode == 1){                                 
-        pantalla(13,Cursor, ">");
+        pantalla(13,Cursor, cursorText);
       }  
     }
 
