@@ -70,8 +70,7 @@ String MainMenu[MainMenuItems] = {                                          //Se
 };
 
 String cursorText = ">";
-bool cursorMode = false;
-bool antCursorMode = false;
+
 
 //Diferentes páginas dentro del menú
 int menuPage = 0;              //Salto de página en los menús
