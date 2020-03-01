@@ -52,7 +52,7 @@ int antCursor = 1;               //----------------------Posicion anterior del C
 
 
 //Para saber el número de elementos que tiene el menú
-const byte MainMenuItems = 11;
+const byte MainMenuItems = 12;
 
 //Los textos del menú
 String MainMenu[MainMenuItems] = {                                          //Se pueden añadir más elementos al menú, habría que actualizar el valor de MainMenuItems y GO!!! siempre tiene que estar el último
@@ -65,12 +65,14 @@ String MainMenu[MainMenuItems] = {                                          //Se
                                 "D2  SIZE +",
                                 "D1<  >D2 +",
                                 "D.CAMERA +",
-                                "D. FLASH",                                
+                                "D. FLASH",
+                                "RESET",
                                 "GO!!!"
 };
 
-String cursorText = ">";
-
+String cursorText = ">";       //Lo que muestra el cursor en el menú
+bool cursorState = false;      //Para controlar los 2 tipos de cursor ">" y "+"
+bool antcursorState = false;   //Posición anterior del cursor  
 
 //Diferentes páginas dentro del menú
 int menuPage = 0;              //Salto de página en los menús
@@ -103,8 +105,12 @@ int cameraDelay_sum = 0;
 
 //Cuánto tiene que aumentar o disminuir cada valor por cada giro del Encoder
 int sumPhotos = 5;  //Las fotos van de 5 en 5 
-int sum = 5;        //El resto de valores sube de 5 en 5 
-int resta = -1;      //y bajan de 1 en 1
+int sumNormal = 5;        //El resto de valores sube de 5 en 5 
+int restaNormal = -1;      //y bajan de 1 en 1
+int sumPlus = 10;         //O van de 10 en 10 si estamos en +, pulsación larga del botón estando en Mode 1
+int restaPlus = -10; 
+int sum = sumNormal;
+int resta = restaNormal;
 
 //Tiempo de reposo entre foto y foto para dar tiempo a recargar los flashes
 int delay_between_pictures = 2000;     

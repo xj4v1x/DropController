@@ -12,7 +12,7 @@ void action(byte page, byte point, int valor){
           if (drop_2_size<0) drop_2_size=0;
           pantalla(15, 2, String(drop_2_size));  
         break; 
-        case 3:                                         //En la Segunda línea
+        case 3:                                         //En la Tercera línea
           dropsDelay+=valor;                            //Aumenta (o dismuye, según el valor recibido) el valor del tiempo entre gotas
           if (dropsDelay<0) dropsDelay=0;
           pantalla(15, 3, String(dropsDelay));           
@@ -33,7 +33,7 @@ void action(byte page, byte point, int valor){
           if ((numPhotos>1) & (numPhotos%sumPhotos!=0)) numPhotos-=1;
           pantalla(15, 2, String(numPhotos));  
         break; 
-        case 3:                                         //Aumenta (o dismuye, según el valor recibido) el incremento a realizar en el tamaño de la gota 1
+        case 3:                                         //Incremento a realizar en el tamaño de la gota 1
           drop_1_sum+=valor;   
           if (dropsDelay_sum<0) dropsDelay_sum=0;
           pantalla(15, 3, String(dropsDelay_sum));           
@@ -42,17 +42,17 @@ void action(byte page, byte point, int valor){
     break;
     case 2:                                             //En la tercera página
       switch(point){
-        case 1:                                         //Aumenta (o dismuye, según el valor recibido) el incremento a realizar en el tamaño de la gota 2          
+        case 1:                                         //Incremento a realizar en el tamaño de la gota 2          
           drop_2_sum+=valor;
           if (drop_2_sum<0) drop_2_sum=0;
           pantalla(15, 1, String(cameraDelay_sum));         
         break;
-        case 2:                                         //Aumenta (o dismuye, según el valor recibido) el incremento a realizar en el tiempo entre gotas
+        case 2:                                         //Incremento a realizar en el tiempo entre gotas
           dropsDelay_sum+=valor;
           if (dropsDelay_sum<0) dropsDelay_sum=0;
           pantalla(15, 2, String(dropsDelay_sum));  
         break; 
-        case 3:                                         //Aumenta (o dismuye, según el valor recibido) el incremento a realizar en el tiempo entre gotas
+        case 3:                                         //Incremento a realizar en el retardo de la cámara
           cameraDelay_sum+=valor;   
           if (cameraDelay_sum<0) cameraDelay_sum=0;
           pantalla(15, 3, String(cameraDelay_sum));           
@@ -67,6 +67,7 @@ void action(byte page, byte point, int valor){
           if (delay_between_pictures<0) delay_between_pictures=0;
           pantalla(15, 1, String(delay_between_pictures/1000));         
         break;
+
       }
     break;
   }

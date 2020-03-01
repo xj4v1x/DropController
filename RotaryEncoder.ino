@@ -10,7 +10,30 @@ void checkButton(){                                 //----------------------CHEQ
   }
 if (!digitalRead(Boton)){                         //Al ser PULLUP hay que preguntar "lo contrario"
     delay(250);
-    OK_Button();
+    if (Mode == 1){
+      antcursorState = cursorState;
+      temp = millis();
+      while (!digitalRead(Boton)){      
+      }
+      if (millis() > temp+300) cursorState = !cursorState;                      
+      if (antcursorState != cursorState){
+        showMenu();  
+      } else {
+        cursorState = false;
+        OK_Button();   
+      }
+    } else {
+        while (!digitalRead(Boton)){      
+        }
+        OK_Button();
+    }
+  }
+  if (cursorState){
+    sum = sumPlus;
+    resta = restaPlus;
+  } else {
+    sum = sumNormal;
+    resta = restaNormal;
   }
 }
 
@@ -71,8 +94,19 @@ void RotateRight(){                             //Giro a la derecha
 
 void OK_Button(){                                     //Pulsación del botón
   if (Mode == 0){
-    if (menuPage*LCD_Util_Rows+Cursor == MainMenuItems) {
-      shootNow();      
-    } else Mode = 1;     
+    if ((menuPage == 3) & (Cursor == 2)){
+      drop_1_size = 30;      //Tamaño de la gota 1 en ms
+      drop_2_size = 18;      //Tamaño de la gota 2 en ms
+      dropsDelay = 52;       //Espacio de tiempo entre gota 1 y gota 2 en ms
+      cameraDelay = 142;     //Tiempo de retardo del disparo de la cámara respecto a la gota 2 en ms
+      numPhotos = 1;         //Número de fotos a realizar
+      delay_between_pictures = 2000;
+      showMenu();
+    } else {
+      if (menuPage*LCD_Util_Rows+Cursor == MainMenuItems) {
+        shootNow();      
+      } else Mode = 1;     
+    }
+      
   } else Mode = 0;
 }

@@ -17,6 +17,9 @@ void pantalla(byte x, byte y, String texto){        //Muestra en pantalla el tex
 
 void showMenus(){                                                         //Menú en pantalla
   pantalla(4, 0, "DROP CONTROLLER");
+  if (cursorState){
+    cursorText = "+";        
+  } else cursorText = ">";
   for (int i=0;i<LCD_Util_Rows;i++){                                      //Muestra el texto de la tabla dependiendo en la página que estemos y teniendo en cuenta el número de líneas útiles del LCD
       if (i+(menuPage*LCD_Util_Rows)<MainMenuItems) pantalla(2,i+marginTop,MainMenu[i+(menuPage*LCD_Util_Rows)]);    
     } 
